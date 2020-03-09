@@ -34,7 +34,7 @@ class DatasetManager():
         print("Label file name: ", end = "")
         labelFile = input()
 
-        print("Verification labal file name: ", end = '')
+        print("Verification label file name: ", end = '')
         verificationFile = input()
 
         print("Color mode (y/n): ", end = "")
@@ -75,6 +75,8 @@ class DatasetManager():
         print("0. Create training feature and label sets")
         print("1. Create validation feature and label sets")
         print("2. Save dataset to memory")
+        print("3. Add validation feature set")
+        print("4. Data Augumentation options")
 
 
     def manageDataset(self, datasetID):
@@ -101,6 +103,20 @@ class DatasetManager():
                 print("Filename: ", end = "")
                 keyIn = input()
                 self.dataSets[datasetID].saveDataSetModule(name = keyIn)
+            elif keyIn == '3':
+                print("Verification label file name: ", end = '')
+                verificationFile = input()
+                #Refractor to use static methods
+            elif keyIn == '4':
+                print("0. Image rotation")
+                print("1. Image scaling")
+                keyIn == input()
+                if keyIn == '0':
+                    self.rotateImages()
+                elif keyIn == '1':
+                    self.scaleImages()
+                else:
+                    print("[!] Invalid input")
             elif keyIn == 'd':
                 self.dataSets[datasetID].printOutDebug()
             elif keyIn == 'e':
@@ -137,6 +153,14 @@ class DatasetManager():
                     print('**Dataset "{}" loaded'.format(DSMload.name))
                 except:
                     print("[!] DataSetModule file not found or could not be loaded!")
+
+
+    def rotateImages(self):
+        print("[!] Not implemented yet")
+
+
+    def scaleImages(self):
+        print("[!] Not implemented yet")
 
 
     def getSavedDatasets(self):
