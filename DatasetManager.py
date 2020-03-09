@@ -50,7 +50,8 @@ class DatasetManager():
 
         #Create and load new dataset
         DSLoader = DataLoader(name, path, labelFile, colorMode)
-        newDSM = DSLoader.loadDataset(DSLoader.path, DSLoader.infoFile)
+        loadedImages = DSLoader.loadDataset(DSLoader.path, DSLoader.infoFile)
+        newDSM = DataSetModule(name, colorMode, loadedImages, None)
         self.dataSets.append(newDSM)
 
 

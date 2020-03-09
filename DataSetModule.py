@@ -19,7 +19,7 @@ class DataSetModule():
         self.featureSetValidation = []
         self.labelSetValidation = []
 
-
+       
     def createFeatureSet(self, resX, resY):
         if len(self.featureSet) != 0:
             self.featureSet = []

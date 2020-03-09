@@ -2,8 +2,6 @@ import os
 import cv2
 import numpy as np
 
-from DataSetModule import DataSetModule
-
 class DataLoader():
 
     # colorMode:
@@ -17,7 +15,7 @@ class DataLoader():
         self.loadedData = []
 
 
-    #Loads dataset and returns it as a DataSetModule object
+    #Loads images from dataset and returns them in array
     def loadDataset(self, pathToDataset, infoFile, mode = "text"):
         if mode == "text":
             datasetElements = []
@@ -43,8 +41,7 @@ class DataLoader():
 
                 print("**Loaded {} images into memory".format(len(self.loadedData)))
 
-                DSModule = DataSetModule(self.name, self.colorMode, self.loadedData, None)
-                return DSModule
+                return self.loadedData
 
             except:
                 print("[!] Unable to load data from this file")
