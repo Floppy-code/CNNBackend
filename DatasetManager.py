@@ -34,6 +34,9 @@ class DatasetManager():
         print("Label file name: ", end = "")
         labelFile = input()
 
+        print("Verification labal file name: ", end = '')
+        verificationFile = input()
+
         print("Color mode (y/n): ", end = "")
         colorMode = input()
         if colorMode == 'y':
@@ -49,10 +52,22 @@ class DatasetManager():
             return
 
         #Create and load new dataset
-        DSLoader = DataLoader(name, path, labelFile, colorMode)
-        loadedImages = DSLoader.loadDataset(DSLoader.path, DSLoader.infoFile)
-        newDSM = DataSetModule(name, colorMode, loadedImages, None)
-        self.dataSets.append(newDSM)
+        #TODO Refractor to use static methods!
+        if verificationFile == "":
+            DSLoader = DataLoader(name, path, labelFile, colorMode)
+            loadedImagesTraining = DSLoader.loadDataset(DSLoader.path, DSLoader.infoFile)
+
+            newDSM = DataSetModule(name, colorMode, loadedImages, None)
+            self.dataSets.append(newDSM)
+        else:
+            DSLoader = DataLoader(name, path, labelFile, colorMode)
+            loadedImagesTraining = DSLoader.loadDataset(DSLoader.path, DSLoader.infoFile)
+
+            DSLoader = DataLoader(name, path, verificationFile, colorMode)
+            loadedImagesVerification = DSLoader.loadDataset(DSLoader.path, DSLoader.infoFile)
+            
+            newDSM = DataSetModule(name, colorMode, loadedImages, None)
+            self.dataSets.append(newDSM)
 
 
     def printAvailableCommands(self):
