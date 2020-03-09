@@ -66,7 +66,7 @@ class NeuralNetModule():
     def saveModelShallow(self, name):
         name = name + ".h5"
         self.model.save(name)
-        print("Shallow copy of {} saved as {}".format(self.name, name))
+        print("**Shallow copy of {} saved as {}".format(self.name, name))
 
     #Saves both the model and the dataset as ".nnm"
     def saveModelDeep(self, name):
