@@ -1,4 +1,5 @@
 import os
+os.environ["KERAS_BACKEND"] = "plaidml.keras.backend"
 
 from InputParser import InputParser
 from DatasetManager import DatasetManager
