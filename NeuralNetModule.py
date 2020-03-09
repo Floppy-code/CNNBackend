@@ -1,7 +1,6 @@
 import os
 import pickle
-#import tensorflow as tf
-from keras.models import Sequential, Model
+from keras.models import Sequential, Model, load_model
 from keras.layers import Conv2D, MaxPooling2D, UpSampling2D, Activation, Dense, Dropout, Flatten
 from keras.callbacks import EarlyStopping
 
@@ -63,8 +62,21 @@ class NeuralNetModule():
         results = self.model.predict(setToPredict, verbose = 1)
         return results
 
-    def saveModel(self, name):
+    #Only saves the model and its weights as .h5 (Keras datatype)
+    def saveModelShallow(self, name):
+        name = name + ".h5"
+        self.model.save(name)
+        print("Shallow copy of {} saved as {}".format(self.name, name))
+
+    #Saves both the model and the dataset as ".nnm"
+    def saveModelDeep(self, name):
         name = name + ".nnm"
         pickleOut = open(name, 'wb')
         pickle.dump(self, pickleOut)
         print("**Neural Net Module saved as {}".format(name))
+
+    def loadModelShallow(self, filepath):
+        self.model = load_model(filepath)
+
+    def setDataset(self, dataset):
+        self.datasetModule = dataset

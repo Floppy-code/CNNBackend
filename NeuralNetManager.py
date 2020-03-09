@@ -59,9 +59,18 @@ class NeuralNetManager():
             elif keyIn == '4':
                 pass
             elif keyIn == '5':
-                print("Filename: ", end = '')
+                print("Save as deep copy? (y/n): ", end = '')
                 keyIn = input()
-                module.saveModel(keyIn)
+                if "y" in keyIn:
+                    print("Filename: ", end = '')
+                    keyIn = input()
+                    module.saveModelDeep(keyIn)
+                elif "n" in keyIn:
+                    print("Filename: ", end = '')
+                    keyIn = input()
+                    module.saveModelShallow(keyIn)
+                else:
+                    print("[!] Invalid input")
             elif keyIn == 'e':
                 break
             else:
@@ -117,7 +126,7 @@ class NeuralNetManager():
     def getSavedNeuralModules(self):
         savedModules = []
         for file in os.listdir():
-            if ".nnm" in file:
+            if ".nnm" in file or ".h5" in file:
                 savedModules.append(file)
         return savedModules
 
@@ -137,17 +146,30 @@ class NeuralNetManager():
         print("")
         if (keyIn == 'a'):
             for module in savedModules:
+                if ".nnm" in module:
+                    try:
+                        NNMLoad = pickle.load(open(module), 'rb')
+                        self.neuralNetworks.append(NNMLoad)
+                        print('**Module "{}" loaded'.format(NNMLoad.name))
+                    except:
+                        print("[!] NeuralNetModule file {} not found or could not be loaded!".format(module))
+        else:
+            if ".h5" in savedModules[int(keyIn)]:
+                if len(self.neuralNetworks) == 0:
+                    print("[!] No existing neural network modules, cannot assign .h5 file")
+                    return
+                toLoad = savedModules[int(keyIn)]
+                self.printAvailableNetworks()
+                print("Load .h5 into network: ", end = '')
+                keyIn = input()
                 try:
-                    NNMLoad = pickle.load(open(module), 'rb')
+                    self.neuralNetworks[int(keyIn)].loadModelShallow(toLoad)
+                except:
+                    print("[!] .h5 model could not be loaded into neural network module \"{}\"".format(self.neuralNetworks[int(keyIn)].name))
+            else:
+                try:
+                    NNMLoad = pickle.load(open(savedModules[int(keyIn)], 'rb'))
                     self.neuralNetworks.append(NNMLoad)
                     print('**Module "{}" loaded'.format(NNMLoad.name))
                 except:
-                    print("[!] NeuralNetModule file {} not found or could not be loaded!".format(module))
-        else:
-            try:
-                print(savedModules[int(keyIn)])
-                NNMLoad = pickle.load(open(savedModules[int(keyIn)], 'rb'))
-                self.neuralNetworks.append(NNMLoad)
-                print('**Module "{}" loaded'.format(NNMLoad.name))
-            except:
-                print("[!] NeuralNetModule file not found or could not be loaded!")
+                    print("[!] NeuralNetModule file not found or could not be loaded!")
