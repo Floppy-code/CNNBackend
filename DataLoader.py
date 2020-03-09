@@ -8,6 +8,7 @@ import numpy as np
 
 #Loads images from dataset and returns them in array
 def loadDataset(pathToDataset, infoFile, colorMode = True, mode = "text"):
+    loadedData = []
     if mode == "text":
         datasetElements = []
         try:
@@ -22,17 +23,17 @@ def loadDataset(pathToDataset, infoFile, colorMode = True, mode = "text"):
 
             for label, imagePath in datasetElements:
                 try:
-                    if self.colorMode == True:
+                    if colorMode == True:
                         imgFile = cv2.imread(os.path.join(pathToDataset, imagePath), cv2.IMREAD_COLOR)
                     else:
                         imgFile = cv2.imread(os.path.join(pathToDataset, imagePath), cv2.IMREAD_GRAYSCALE)
-                    self.loadedData.append([label, imgFile])
+                    loadedData.append([label, imgFile])
                 except:
                     print("[!] Loading/resizing of image {} failed".format(imagePath))
 
             print("**Loaded {} images into memory".format(len(self.loadedData)))
 
-            return self.loadedData
+            return loadedData
 
         except:
             print("[!] Unable to load data from this file")
