@@ -57,7 +57,7 @@ class DatasetManager():
             DSLoader = DataLoader(name, path, labelFile, colorMode)
             loadedImagesTraining = DSLoader.loadDataset(DSLoader.path, DSLoader.infoFile)
 
-            newDSM = DataSetModule(name, colorMode, loadedImages, None)
+            newDSM = DataSetModule(name, colorMode, loadedImagesTraining, None)
             self.dataSets.append(newDSM)
         else:
             DSLoader = DataLoader(name, path, labelFile, colorMode)
@@ -66,7 +66,7 @@ class DatasetManager():
             DSLoader = DataLoader(name, path, verificationFile, colorMode)
             loadedImagesVerification = DSLoader.loadDataset(DSLoader.path, DSLoader.infoFile)
             
-            newDSM = DataSetModule(name, colorMode, loadedImages, None)
+            newDSM = DataSetModule(name, colorMode, loadedImagesTraining, loadedImagesVerification)
             self.dataSets.append(newDSM)
 
 

@@ -55,8 +55,9 @@ class NeuralNetModule():
         if valSplit == '':
             valSplit = 0.1
 
-        print("Use validation feature set (y/n): ", end = '')
-        validation = input()
+        if len(self.datasetModule.labelSetValidation) != 0:
+            print("Use validation feature set (y/n): ", end = '')
+            validation = input()
 
         Xtrain = self.datasetModule.featureSet
         Ytrain = self.datasetModule.labelSet

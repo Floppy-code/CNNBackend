@@ -71,6 +71,8 @@ class NeuralNetManager():
                     module.saveModelShallow(keyIn)
                 else:
                     print("[!] Invalid input")
+            elif keyIn == 'd':
+                module.model.summary()
             elif keyIn == 'e':
                 break
             else:
