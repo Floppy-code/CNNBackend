@@ -31,7 +31,7 @@ def loadDataset(pathToDataset, infoFile, colorMode = True, mode = "text"):
                 except:
                     print("[!] Loading/resizing of image {} failed".format(imagePath))
 
-            print("**Loaded {} images into memory".format(len(self.loadedData)))
+            print("**Loaded {} images into memory".format(len(loadedData)))
 
             return loadedData
 
