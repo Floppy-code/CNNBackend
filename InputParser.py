@@ -26,12 +26,14 @@ class InputParser():
                 self.DSManager.loadDatasetFromMemory()
 
             elif keyboardIn == '3':
+                self.DSManager.printAvailableDatasets()
                 print("Dataset ID: ", end = "")
                 keyboardIn = input()
                 print("")
                 self.DSManager.deleteDataset(int(keyboardIn))
 
             elif keyboardIn == '4':
+                self.DSManager.printAvailableDatasets()
                 print("Dataset ID: ", end = "")
                 keyboardIn = input()
                 print("")
