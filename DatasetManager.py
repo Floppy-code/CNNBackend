@@ -68,27 +68,29 @@ class DatasetManager():
             print("[!] Dataset not found or out of range")
             return
 
-
-        self.printAvailableCommands()
-        keyIn = input()
-        print("")
-        if keyIn == '0':
-            print("ResolutionX: ", end = '')
-            resX = int(input())
-            print("ResolutionY: ", end = '')
-            resY = int(input())
-            workingDataset.createFeatureSet(resX, resY)
-            workingDataset.createLabelSet()
-        elif keyIn == '1':
-            print("[!] Not implemented yet")
-        elif keyIn == '2':
-            print("Filename: ", end = "")
+        while True:
+            self.printAvailableCommands()
             keyIn = input()
-            self.dataSets[datasetID].saveDataSetModule(name = keyIn)
-        elif keyIn == 'd':
-            self.dataSets[datasetID].printOutDebug()
-        else:
-            print("[!] Invalid option")
+            print("")
+            if keyIn == '0':
+                print("ResolutionX: ", end = '')
+                resX = int(input())
+                print("ResolutionY: ", end = '')
+                resY = int(input())
+                workingDataset.createFeatureSet(resX, resY)
+                workingDataset.createLabelSet()
+            elif keyIn == '1':
+                print("[!] Not implemented yet")
+            elif keyIn == '2':
+                print("Filename: ", end = "")
+                keyIn = input()
+                self.dataSets[datasetID].saveDataSetModule(name = keyIn)
+            elif keyIn == 'd':
+                self.dataSets[datasetID].printOutDebug()
+            elif keyIn == 'e':
+                break
+            else:
+                print("[!] Invalid option")
         
 
     def loadDatasetFromMemory(self):

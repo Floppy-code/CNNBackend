@@ -55,8 +55,18 @@ class NeuralNetModule():
         if valSplit == '':
             valSplit = 0.1
 
-        self.model.fit(self.datasetModule.featureSet, self.datasetModule.labelSet, epochs = int(epochs), batch_size = int(batchSize), validation_split = float(valSplit))
+        print("Use validation feature set (y/n): ", end = '')
+        validation = input()
 
+        Xtrain = self.datasetModule.featureSet
+        Ytrain = self.datasetModule.labelSet
+        Xvalidation = self.datasetModule.featureSetValidation
+        Yvalidation = self.datasetModule.labelSetValidation
+
+        if len(self.datasetModule.labelSetValidation) == 0 or validation == 'n':
+            self.model.fit(Xtrain, Ytrain, epochs = int(epochs), batch_size = int(batchSize), validation_split = float(valSplit))
+        elif len(self.datasetModule.labelSetValidation) != 0:
+            self.model.fit(Xtrain, Ytrain, validation_data = (Xvalidation, Yvalidation), batch_size = int(batchSize))
 
     def predict(self, setToPredict):
         results = self.model.predict(setToPredict, verbose = 1)
