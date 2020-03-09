@@ -60,7 +60,6 @@ class DatasetManager():
             self.dataSets.append(newDSM)
         else:
             loadedImagesTraining = DataLoader.loadDataset(path, labelFile, colorMode)
-
             loadedImagesVerification = DataLoader.loadDataset(path, verificationFile, colorMode)
             
             newDSM = DataSetModule(name, colorMode, loadedImagesTraining, loadedImagesVerification)
@@ -109,9 +108,9 @@ class DatasetManager():
                 print("1. Image scaling")
                 keyIn == input()
                 if keyIn == '0':
-                    self.rotateImages()
+                    workingDataset.applyImageRotation()
                 elif keyIn == '1':
-                    self.scaleImages()
+                    workingDataset.applyImageScaling()
                 else:
                     print("[!] Invalid input")
             elif keyIn == 'd':
@@ -150,14 +149,6 @@ class DatasetManager():
                     print('**Dataset "{}" loaded'.format(DSMload.name))
                 except:
                     print("[!] DataSetModule file not found or could not be loaded!")
-
-
-    def rotateImages(self):
-        print("[!] Not implemented yet")
-
-
-    def scaleImages(self):
-        print("[!] Not implemented yet")
 
 
     def getSavedDatasets(self):

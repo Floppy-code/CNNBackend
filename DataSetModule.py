@@ -21,25 +21,17 @@ class DataSetModule():
 
        
     def createFeatureSet(self, resX, resY):
-        if len(self.featureSet) != 0:
-            self.featureSet = []
-
-        for label, image in self.trainingData:
-            imageResized = cv2.resize(image, (resX, resY))
-            self.featureSet.append(imageResized)
-
-        self.featureSet = np.array(self.featureSet)
-        if self.colorMode == True:
-            self.featureSet = self.featureSet.reshape(len(self.featureSet), resX, resY, 3)
-        elif self.colorMode == False:
-            self.featureSet = self.featureSet.reshape(len(self.featureSet), resX, resY, 1)
-        self.featureSet = self.featureSet / 255.0
-
         self.resolutionX = resX
         self.resolutionY = resY
+        self.featureSet = self.convertImagesToArray(self.trainingData, self.resolutionX, self.resolutionY)
 
-        print("**FeatureSet created, {} images, resized to {}x{}".format(len(self.featureSet), resX, resY))
 
+    def createFeatureSetValidation(self):
+        if len(self.featureSet) != 0:
+            self.featureSetValidation = self.convertImagesToArray(self.testingData, self.resolutionX, self.resolutionY)
+        else:
+            print("[!] Feature Set not yet created")
+        
 
     def createLabelSet(self):
         self.assignIndexToLabel()
@@ -50,6 +42,38 @@ class DataSetModule():
             self.labelSet.append(self.labelDictionary[label])
 
         self.labelSet = np.array(self.labelSet)
+
+    
+    def createLabelSetValidation(self):
+        if len(self.labelSet) != 0:
+            if len(self.labelSetValidation) != 0:
+                self.labelSetValidation = []
+
+            for label, image in self.testingData:
+                self.labelSetValidation.append(self.labelDictionary[label])
+
+            self.labelSetValidation = np.array(self.labelSetValidation)
+        else:
+            print("[!] Label Set not yet created")
+
+
+    def convertImagesToArray(self, setToConvert, resX, resY):
+        if len(setToConvert) != 0:
+            setToConvert = []
+
+        for label, image in self.trainingData:
+            imageResized = cv2.resize(image, (resX, resY))
+            setToConvert.append(imageResized)
+
+        setToConvert = np.array(setToConvert)
+        if self.colorMode == True:
+            setToConvert = setToConvert.reshape(len(setToConvert), resX, resY, 3)
+        elif self.colorMode == False:
+            setToConvert = setToConvert.reshape(len(setToConvert), resX, resY, 1)
+        setToConvert = setToConvert / 255.0
+
+        print("**Images converted, {} images, resized to {}x{}".format(len(setToConvert), resX, resY))
+        return setToConvert
 
 
     def assignIndexToLabel(self):
@@ -72,13 +96,16 @@ class DataSetModule():
         return uniqueLabels
 
 
-    def createFeatureSetValidation(self):
-        pass
+    def applyImageRotation(self, degree = None):
+        rotation = (90, 180, 270)
+        if degree != None:
+            rotation = degree
 
 
-    def createLabelSetValidation(self):
+
+    def applyImageScaling(self, scale = None):
         pass
-            
+         
 
     def saveDataSetModule(self, path = "", name = "DSM"):
         name = name + ".dsm"
