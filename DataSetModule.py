@@ -27,6 +27,9 @@ class DataSetModule():
 
 
     def createFeatureSetValidation(self):
+        if len(self.testingData) == 0:
+            print("[!] Cammpt create feature set without input")
+            return
         if len(self.featureSet) != 0:
             self.featureSetValidation = self.convertImagesToArray(self.testingData, self.resolutionX, self.resolutionY)
         else:
@@ -45,6 +48,9 @@ class DataSetModule():
 
     
     def createLabelSetValidation(self):
+        if len(self.testingData) == 0:
+            print("[!] Cannot create label set without input")
+            return
         if len(self.labelSet) != 0:
             if len(self.labelSetValidation) != 0:
                 self.labelSetValidation = []

@@ -94,7 +94,8 @@ class DatasetManager():
                 workingDataset.createFeatureSet(resX, resY)
                 workingDataset.createLabelSet()
             elif keyIn == '1':
-                print("[!] Not implemented yet")
+                workingDataset.createFeatureSetValidation()
+                workingDataset.createLabelSetValidation()
             elif keyIn == '2':
                 print("Filename: ", end = "")
                 keyIn = input()
@@ -102,7 +103,6 @@ class DatasetManager():
             elif keyIn == '3':
                 print("Verification label file name: ", end = '')
                 verificationFile = input()
-                #Refractor to use static methods
             elif keyIn == '4':
                 print("0. Image rotation")
                 print("1. Image scaling")
