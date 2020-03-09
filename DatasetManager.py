@@ -1,7 +1,7 @@
 import os
 import pickle
 
-from DataLoader import DataLoader
+import DataLoader
 from DataSetModule import DataSetModule
 
 class DatasetManager():
@@ -54,17 +54,14 @@ class DatasetManager():
         #Create and load new dataset
         #TODO Refractor to use static methods!
         if verificationFile == "":
-            DSLoader = DataLoader(name, path, labelFile, colorMode)
-            loadedImagesTraining = DSLoader.loadDataset(DSLoader.path, DSLoader.infoFile)
+            loadedImagesTraining = DataLoader.loadDataset(path, labelFile, colorMode)
 
             newDSM = DataSetModule(name, colorMode, loadedImagesTraining, None)
             self.dataSets.append(newDSM)
         else:
-            DSLoader = DataLoader(name, path, labelFile, colorMode)
-            loadedImagesTraining = DSLoader.loadDataset(DSLoader.path, DSLoader.infoFile)
+            loadedImagesTraining = DataLoader.loadDataset(path, labelFile, colorMode)
 
-            DSLoader = DataLoader(name, path, verificationFile, colorMode)
-            loadedImagesVerification = DSLoader.loadDataset(DSLoader.path, DSLoader.infoFile)
+            loadedImagesVerification = DataLoader.loadDataset(path, verificationFile, colorMode)
             
             newDSM = DataSetModule(name, colorMode, loadedImagesTraining, loadedImagesVerification)
             self.dataSets.append(newDSM)
