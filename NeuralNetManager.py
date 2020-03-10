@@ -118,7 +118,8 @@ class NeuralNetManager():
         result = module.predict(npArray)
         print("Probabilities: ")
         for i in range(0, len(result[0])):
-            print("{}% - {}".format(result[0][i] * 100, module.datasetModule.getNameFromLabel(i)))
+            if result[0][i] >= 0.1:
+                print("{}% - {}".format(result[0][i] * 100, module.datasetModule.getNameFromLabel(i)))
 
 
     def deleteExistingNetwork(self):

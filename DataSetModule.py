@@ -109,14 +109,40 @@ class DataSetModule():
 
         oldImageCount = len(self.trainingData)
         counter = 0
+
+        fsetAddon = []
+        lsetAddon = []
+
         for label, image in self.trainingData:
             for angle in rotation:
                 rotatedImage = self.rotateImage(image,angle)
-                self.trainingData.append((label, rotatedImage))
+                #self.trainingData.append((label, rotatedImage))
+                
+                #I was running out of RAM trying to save them at full size...
+                img = cv2.resize(rotatedImage, (self.resolutionX, self.resolutionY))
+                fsetAddon.append(img)
+                lsetAddon.append(self.labelDictionary[label])
 
             if counter == oldImageCount:
                 break
+            if (counter % 100) == 0:
+                print("**Rotated {} out of {} images".format(counter, oldImageCount))
             counter += 1
+
+        #DEBUG - Out of RAM
+        self.trainingData = []
+
+        fsetAddon = np.array(fsetAddon)
+        if self.colorMode == True:
+            fsetAddon = fsetAddon.reshape(len(fsetAddon), self.resolutionX, self.resolutionY, 3)
+        else:
+            fsetAddon = fsetAddon.reshape(len(fsetAddon), self.resolutionX, self.resolutionY, 1)
+        fsetAddon = fsetAddon / 255.0
+        lsetAddon = np.array(lsetAddon)
+
+        print("**Concating arrays!")
+        self.featureSet = np.concatenate((self.featureSet, fsetAddon), axis = 0)
+        self.labelSet = np.concatenate((self.labelSet, lsetAddon), axis = 0)
 
         print("**Images rotated!")
 
