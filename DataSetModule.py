@@ -1,6 +1,7 @@
 import pickle
 import os
 import numpy as np
+import matplotlib.pyplot as plt
 import cv2
 
 #TODO pridat aj 1D a 3D??
@@ -11,7 +12,7 @@ class DataSetModule():
         self.resolutionX = 0
         self.resolutionY = 0
         self.trainingData = trainData #format -> [labels, cv2 image]
-        self.testingData = testData  #format -> [labels, cv2 image]
+        self.validationData = testData  #format -> [labels, cv2 image]
         self.labelDictionary = {}
         self.reverseLabelDictionary = {}
         self.featureSet = []
@@ -27,11 +28,11 @@ class DataSetModule():
 
 
     def createFeatureSetValidation(self):
-        if len(self.testingData) == 0:
-            print("[!] Cammpt create feature set without input")
+        if len(self.validationData) == 0:
+            print("[!] Cannot create feature set without input")
             return
         if len(self.featureSet) != 0:
-            self.featureSetValidation = self.convertImagesToArray(self.testingData, self.resolutionX, self.resolutionY)
+            self.featureSetValidation = self.convertImagesToArray(self.validationData, self.resolutionX, self.resolutionY)
         else:
             print("[!] Feature Set not yet created")
         
@@ -48,14 +49,14 @@ class DataSetModule():
 
     
     def createLabelSetValidation(self):
-        if len(self.testingData) == 0:
+        if len(self.validationData) == 0:
             print("[!] Cannot create label set without input")
             return
         if len(self.labelSet) != 0:
             if len(self.labelSetValidation) != 0:
                 self.labelSetValidation = []
 
-            for label, image in self.testingData:
+            for label, image in self.validationData:
                 self.labelSetValidation.append(self.labelDictionary[label])
 
             self.labelSetValidation = np.array(self.labelSetValidation)
@@ -102,15 +103,49 @@ class DataSetModule():
         return uniqueLabels
 
 
-    def applyImageRotation(self, degree = None):
+    #TODO Find better name...
+    def augumentImagesRotation(self):
         rotation = (90, 180, 270)
-        if degree != None:
-            rotation = degree
+
+        oldImageCount = len(self.trainingData)
+        counter = 0
+        for label, image in self.trainingData:
+            for angle in rotation:
+                rotatedImage = self.rotateImage(image,angle)
+                self.trainingData.append((label, rotatedImage))
+
+            if counter == oldImageCount:
+                break
+            counter += 1
+
+        print("**Images rotated!")
 
 
 
-    def applyImageScaling(self, scale = None):
-        pass
+    def rotateImage(self, image, angle):
+        #I followed this StackOverflow reply to program this image rotation part
+        #https://stackoverflow.com/questions/43892506/opencv-python-rotate-image-without-cropping-sides/47248339
+        #TODO - Make this faster if angle is 90*n
+
+        height, width = image.shape[:2]
+        center = (width/2.0, height/2.0)
+
+        M = cv2.getRotationMatrix2D(center, angle, 1.0)
+        absCos = abs(M[0,0])
+        absSin = abs(M[0,1])
+
+        boundW = int(height * absSin + width * absCos)
+        boundH = int(height * absCos + width * absSin)
+
+        M[0,2] += boundW/2 - center[0]
+        M[1,2] += boundH/2 - center[1]
+
+        rotatedImage = cv2.warpAffine(image, M, (boundW, boundH))
+        return rotatedImage
+
+
+    def augumentImagesScaling(self, scale = None):
+        pass #TODO
          
 
     def saveDataSetModule(self, path = "", name = "DSM"):
@@ -137,4 +172,7 @@ class DataSetModule():
         print("Items: {} Resolution: {}x{} Color mode: {}".format(len(self.featureSet), self.resolutionX, self.resolutionY, self.colorMode))
         print("Input shape for CNN: {}".format(self.getInputShape()))
 
-    #TODO: Pridat metody na upravu datasetu (scaling, otacanie atd...)
+
+    def showImage(self, indexInFSet):
+        plt.imshow(self.featureSet[indexInFSet].reshape(self.resolutionX, self.resolutionY, 3))
+        plt.show()

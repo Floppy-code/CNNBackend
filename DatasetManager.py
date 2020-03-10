@@ -106,15 +106,19 @@ class DatasetManager():
             elif keyIn == '4':
                 print("0. Image rotation")
                 print("1. Image scaling")
-                keyIn == input()
-                if keyIn == '0':
-                    workingDataset.applyImageRotation()
-                elif keyIn == '1':
-                    workingDataset.applyImageScaling()
+                print("Option: ", end = '')
+                option = input()
+                if option == '0':
+                    workingDataset.augumentImagesRotation()
+                elif option == '1':
+                    workingDataset.augumentImagesScaling()
                 else:
                     print("[!] Invalid input")
-            elif keyIn == 'd':
+            elif keyIn == 'd1':
                 self.dataSets[datasetID].printOutDebug()
+            elif keyIn == 'd2':
+                print("Index> ", end = '')
+                workingDataset.showImage(int(input()))
             elif keyIn == 'e':
                 break
             else:
