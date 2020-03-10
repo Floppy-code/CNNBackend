@@ -27,7 +27,7 @@ def loadDataset(pathToDataset, infoFile, colorMode = True, mode = "text"):
                         imgFile = cv2.imread(os.path.join(pathToDataset, imagePath), cv2.IMREAD_COLOR)
                     else:
                         imgFile = cv2.imread(os.path.join(pathToDataset, imagePath), cv2.IMREAD_GRAYSCALE)
-                    loadedData.append([label, imgFile])
+                    loadedData.append((label, imgFile))
                 except:
                     print("[!] Loading/resizing of image {} failed".format(imagePath))
 
